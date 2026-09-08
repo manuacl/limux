@@ -2855,6 +2855,7 @@ mod tests {
     #[test]
     #[ignore = "requires a graphical display and Ghostty resources"]
     fn shutdown_uses_the_terminal_gl_context() {
+        crate::prepare_ghostty_runtime();
         gtk::init().expect("GTK display required");
         init_ghostty();
         let terminal = create_terminal(
@@ -2877,6 +2878,7 @@ mod tests {
         window.present();
         assert!(terminal.handle.surface_cell.borrow().is_some());
         let terminal_context = terminal.handle.gl_area.context().expect("terminal context");
+        assert_eq!(terminal_context.api(), gtk::gdk::GLAPI::GL);
         other_area.make_current();
         assert!(other_area.error().is_none());
         assert_ne!(
