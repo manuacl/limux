@@ -1311,7 +1311,10 @@ pub(crate) fn apply_ratio_value(
         return false;
     }
     applying.set(true);
-    paned.set_position(layout_state::split_position_from_ratio(ratio, size));
+    paned.set_position(crate::split_tree::clamp_paned_position(
+        paned,
+        layout_state::split_position_from_ratio(ratio, size),
+    ));
     update_split_ratio_state(paned, ratio);
     applying.set(false);
     true
